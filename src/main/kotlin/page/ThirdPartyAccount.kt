@@ -1,0 +1,5 @@
+package page
+
+class ThirdPartyAccount {
+
+}
