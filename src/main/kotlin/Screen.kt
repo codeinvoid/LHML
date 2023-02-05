@@ -29,6 +29,7 @@ fun MainContent() {
                 onItemClick= { navigation.push(Screen.OfflineAuth) })
             is Screen.OfflineAuth -> OfflineAccount().enterName(onBack = navigation::pop)
             is Screen.ThirdParty -> ThirdPartyAccount()
+            else -> {}
         }
     }
 }

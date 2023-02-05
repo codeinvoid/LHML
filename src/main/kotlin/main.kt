@@ -1,5 +1,4 @@
 import androidx.compose.animation.Crossfade
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.LocalScrollbarStyle
 import androidx.compose.foundation.defaultScrollbarStyle
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -29,24 +28,6 @@ import java.awt.Dimension
 import java.util.*
 import kotlin.math.roundToInt
 
-
-@Composable
-@Preview
-fun App() {
-    var text by remember { mutableStateOf("Hello, World!") }
-    MaterialTheme {
-        Column {
-            Text("Alfred Sisley", Modifier.padding(start = 32.dp))
-            Text("3 minutes ago")
-            Button(onClick = {
-                text = "Hello, Desktop!"
-            }) {
-                Text(text)
-            }
-        }
-    }
-}
-
 @OptIn(ExperimentalDecomposeApi::class)
 fun main() {
     val lifecycle = LifecycleRegistry()
@@ -63,22 +44,24 @@ fun main() {
             undecorated = true,
             transparent = true,
         ) {
-            LaunchedEffect(windowState.size) {
-                if(windowState.size.width < 400.dp)
-                    windowState.size = DpSize(400.dp,windowState.size.height)
-            }
-            Text(windowState.size.toString(),Modifier.offset(x = -10.dp, y = -5.dp))
-            window.maximumSize = Dimension(windowSize.width.value.roundToInt(), windowSize.height.value.roundToInt())
-            window.minimumSize = Dimension(windowSize.width.value.roundToInt(), windowSize.height.value.roundToInt())
-            Surface(
-                modifier = Modifier.fillMaxSize().padding(8.dp).shadow(3.dp, RoundedCornerShape(20.dp),true),
-                shape = RoundedCornerShape(20.dp)
-            ) {
-                AppWindowTitleBar(onExitClick = { if (it) { exitApplication() } })
-                MaterialTheme {
-                    CompositionLocalProvider(LocalScrollbarStyle provides defaultScrollbarStyle()) {
-                        ProvideComponentContext(rootComponentContext) {
-                            MainContent()
+            AppTheme(false) {
+                LaunchedEffect(windowState.size) {
+                    if(windowState.size.width < 400.dp)
+                        windowState.size = DpSize(400.dp,windowState.size.height)
+                }
+                Text(windowState.size.toString(),Modifier.offset(x = -10.dp, y = -5.dp))
+                window.maximumSize = Dimension(windowSize.width.value.roundToInt(), windowSize.height.value.roundToInt())
+                window.minimumSize = Dimension(windowSize.width.value.roundToInt(), windowSize.height.value.roundToInt())
+                Surface(
+                    modifier = Modifier.fillMaxSize().padding(8.dp).shadow(3.dp, RoundedCornerShape(20.dp),true),
+                    shape = RoundedCornerShape(20.dp)
+                ) {
+                    AppWindowTitleBar(onExitClick = { if (it) { exitApplication() } })
+                    MaterialTheme {
+                        CompositionLocalProvider(LocalScrollbarStyle provides defaultScrollbarStyle()) {
+                            ProvideComponentContext(rootComponentContext) {
+                                MainContent()
+                            }
                         }
                     }
                 }
@@ -97,10 +80,11 @@ private fun WindowScope.AppWindowTitleBar(onExitClick: (Boolean) -> Unit) = Wind
             IconButton(onClick = { onExitClick(true) },
                 modifier = Modifier.padding(start = 12.dp, top = 10.dp).width(32.dp).height(32.dp),
                 interactionSource = interactionSource) {
-                var color = remember { Color.LightGray }
+                val color = MaterialTheme.colorScheme.primary
                 Crossfade(targetState = isHovered) { screen ->
                     when (screen) {
-                        true -> Icon(Icons.Rounded.Close, "Close", tint = Color.Red)
+                        true -> Icon(Icons.Rounded.Close, "Close",
+                            tint = MaterialTheme.colorScheme.onBackground)
                         false -> Icon(Icons.Rounded.Close, "Close", tint = color)
                     }
                 }
