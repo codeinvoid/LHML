@@ -13,6 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import component.NextButton
 import component.Progress
+import config.Config
+import config.Setting
+import java.io.File
 
 class ColorMode {
     @Composable
@@ -29,7 +32,6 @@ class ColorMode {
                 modifier = Modifier.fillMaxSize()
             ){
                 var lightMode by remember { mutableStateOf(true) }
-                var followSystem by remember { mutableStateOf(false) }
                 val icon: @Composable () -> Unit = if (lightMode) {
                     {
                         Icon(
@@ -49,40 +51,66 @@ class ColorMode {
                     )
                     }
                 }
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Box (modifier = Modifier.width(380.dp).fillMaxWidth().padding(start = 30.dp, end = 30.dp)){
-                        Row(horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically) {
-                                Text("亮/暗色模式")
-                                Spacer(Modifier.weight(1f))
-                                Switch(
-                                    checked = lightMode,
-                                    onCheckedChange = { lightMode = it
-                                                      isLightMode(it)},
-                                    thumbContent = icon,
-                                    enabled = !followSystem
-                                )
-                            }
-                    }
-                    Box (modifier = Modifier.width(380.dp).fillMaxWidth().padding(start = 30.dp, end = 30.dp)){
-                        Divider()
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-                            Text("跟随系统")
-                            Spacer(Modifier.weight(1f))
-                            Switch(
-                                checked = followSystem,
-                                onCheckedChange = { followSystem = it
-                                isFollowSystem(it)}
-                            )
-                        }
-                    }
-                }
+                col(icon = { icon() }, isFollowSystem = { isFollowSystem(it) }, isLightMode = {
+                    isLightMode(it)
+                    lightMode = it
+                })
                 NextButton(
                     { onItemClick(Screen.Start) },
                     { Icon(Icons.Filled.ArrowForward, "下一步") },
                     Modifier.padding(all = 16.dp),
                     Alignment.CenterEnd
                 )
+            }
+        }
+    }
+
+    private fun changeConfig(colorMode: Boolean, darkMode: Boolean) {
+        val setting = Config(File("./config/setting.toml")).read(Setting::class.java)
+        Config(File("./config/setting.toml")).write(
+            Setting::class.java,
+            setting.copy(colorMode = colorMode, lightMode = darkMode)
+        )
+    }
+
+    @Composable
+    private fun col(
+        icon: @Composable () -> Unit,
+        isFollowSystem: (Boolean) -> Unit,
+        isLightMode: (Boolean) -> Unit,
+    ) {
+        var lightMode by remember { mutableStateOf(true) }
+        var followSystem by remember { mutableStateOf(false) }
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Box (modifier = Modifier.width(380.dp).fillMaxWidth().padding(start = 30.dp, end = 30.dp)){
+                Row(horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically) {
+                    Text("亮/暗色模式")
+                    Spacer(Modifier.weight(1f))
+                    Switch(
+                        checked = lightMode,
+                        onCheckedChange = { lightMode = it
+                            isLightMode(it)
+                            changeConfig(followSystem,lightMode)},
+                        thumbContent = icon,
+                        enabled = !followSystem
+                    )
+                }
+            }
+            Box (modifier = Modifier.width(380.dp).fillMaxWidth().padding(start = 30.dp, end = 30.dp)){
+                Divider()
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text("跟随系统")
+                    Spacer(Modifier.weight(1f))
+                    Switch(
+                        checked = followSystem,
+                        onCheckedChange = { followSystem = it
+                            isFollowSystem(it)
+                            changeConfig(followSystem,lightMode)
+                        }
+                    )
+                }
             }
         }
     }

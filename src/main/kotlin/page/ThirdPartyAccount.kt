@@ -1,6 +1,5 @@
 package page
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import component.NextButton
 
 class ThirdPartyAccount {
-
     @Composable
     fun thirdTodo(onBack: () -> Unit) {
         Box(
