@@ -10,12 +10,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import component.NextButton
+import component.Progress
 import org.to2mbn.jmccc.auth.OfflineAuthenticator
 
 class OfflineAccount {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun enterName(onBack: () -> Unit) {
+    fun enterName(onBack: () -> Unit, progress: Float) {
+        Progress(progress)
         var uesrName by remember { mutableStateOf("") }
         var isError by remember { mutableStateOf(false) }
 
@@ -23,7 +26,7 @@ class OfflineAccount {
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()
         ){
-            Column {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("添加一个离线帐户")
                 OutlinedTextField(
                     value = uesrName,
@@ -31,7 +34,12 @@ class OfflineAccount {
                         isError = uesrName.isBlank()
                     },
                     label = { Text("帐户名") },
-                    isError = isError
+                    isError = isError,
+                    supportingText = {
+                        if (isError) {
+                            Text("不能为空")
+                        }
+                    }
                 )
             }
             NextButton(
@@ -49,26 +57,7 @@ class OfflineAccount {
         }
     }
 
-    @Composable
-    fun NextButton(
-        onClick: () -> Unit,
-        icon: @Composable () -> Unit,
-        modifier: Modifier,
-        contentAlignment: Alignment
-    ) {
-        Box(Modifier.fillMaxSize(),contentAlignment = contentAlignment) {
-            ExtendedFloatingActionButton(
-                text = { },
-                icon = icon,
-                onClick = onClick,
-                elevation = FloatingActionButtonDefaults.elevation(8.dp),
-                modifier = modifier,
-                expanded = false
-            )
-        }
-    }
-
     private fun setting(userName: String) {
-        OfflineAuthenticator(userName)
+        println(OfflineAuthenticator(userName).auth().uuid)
     }
 }

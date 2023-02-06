@@ -1,34 +1,48 @@
 package page
 
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import Screen
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import component.NextButton
+import component.Progress
 
 class StartPage {
     @Composable
-    fun start(onItemClick: (Screen) -> Unit) {
+    fun start(onItemClick: (Screen) -> Unit, progress: Float, onBack: () -> Unit) {
+        Progress(progress) { Text("LHML配置向导", Modifier.padding(top = 15.dp)) }
         Box(
-            contentAlignment = Alignment.Center, // you apply alignment to all children
+            contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            Column(Modifier.align(alignment = Alignment.Center)) {
-                Text("LHML 启动器")
-                Button(onClick = { onItemClick(Screen.OnlineAuth)},Modifier.align(alignment = Alignment.CenterHorizontally)) {
-                    Text(text = "正版")
-                }
-                Button(onClick = { onItemClick(Screen.OfflineAuth)},Modifier.align(alignment = Alignment.CenterHorizontally)) {
-                    Text(text = "离线")
-                }
-                Button(onClick = { onItemClick(Screen.ThirdParty)},Modifier.align(alignment = Alignment.CenterHorizontally)) {
-                    Text(text = "其他")
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text("请 选 择 你 的 验 证 方 式")
+                Row {
+                    Button(onClick = { onItemClick(Screen.OnlineAuth)}, content = {
+                        Text(text = "正版")
+                    }, modifier = Modifier.padding(end = 5.dp))
+                    FilledTonalButton(onClick = { onItemClick(Screen.OfflineAuth)}, content = {
+                        Text(text = "离线")
+                    }, modifier = Modifier.padding(end = 5.dp))
+                    FilledTonalButton(onClick = { onItemClick(Screen.ThirdParty)}, content = {
+                        Text(text = "其他")
+                    })
                 }
             }
+            NextButton(
+                onClick = onBack,
+                { Icon(Icons.Filled.ArrowBack, "上一步") },
+                Modifier.padding(all = 16.dp),
+                Alignment.CenterStart
+            )
         }
     }
 }

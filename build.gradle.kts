@@ -17,15 +17,7 @@ repositories {
         name = "Nova Committee - Snapshot"
         url = uri("https://maven.nova-committee.cn/snapshots/")
     }
-    maven("https://maven.p-io.org/private") {
-        credentials(HttpHeaderCredentials::class) {
-            name = "Authorization"
-            value = "Bearer hmvfxQPtLJMY2c3zzeFHSnKRWtFySc2d"
-        }
-        authentication {
-            create<HttpHeaderAuthentication>("header")
-        }
-    }
+    maven { url =  uri("https://jitpack.io") }
 }
 
 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
@@ -36,12 +28,16 @@ dependencies {
     // With compose.desktop.common you will also lose @Preview functionality
     implementation(compose.desktop.currentOs)
     implementation(compose.material3)
+    implementation(compose.materialIconsExtended)
+    implementation(compose.animationGraphics)
     implementation("dev.3-3:jmccc:3.1.1")
     implementation("dev.3-3:jmccc-microsoft-authenticator:3.1.1")
     implementation("io.github.prismwork:prismconfig:0.2.0:all")
     implementation("com.arkivanov.decompose:decompose:1.0.0")
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains:1.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("com.github.Dansoftowner:jSystemThemeDetector:3.8")
+
 }
 
 compose.desktop {

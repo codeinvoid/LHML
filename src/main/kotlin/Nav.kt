@@ -1,12 +1,6 @@
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.ProvidableCompositionLocal
-import androidx.compose.runtime.State
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.StackAnimation
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
@@ -23,7 +17,6 @@ fun ProvideComponentContext(componentContext: ComponentContext, content: @Compos
     CompositionLocalProvider(LocalComponentContext provides componentContext, content = content)
 }
 
-@OptIn(ExperimentalDecomposeApi::class)
 @Composable
 inline fun <reified C : Parcelable> ChildStack(
     source: StackNavigationSource<C>,
@@ -47,7 +40,6 @@ inline fun <reified C : Parcelable> ChildStack(
     )
 }
 
-@OptIn(ExperimentalDecomposeApi::class)
 @Composable
 fun <C : Any> ChildStack(
     stack: State<ChildStack<C, ComponentContext>>,

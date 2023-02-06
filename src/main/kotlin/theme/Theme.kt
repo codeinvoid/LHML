@@ -1,8 +1,10 @@
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.*
+import com.jthemedetecor.OsThemeDetector
+import org.jetbrains.skiko.SystemTheme
+import org.jetbrains.skiko.currentSystemTheme
 
 
 private val LightColors = lightColorScheme(
@@ -72,17 +74,48 @@ private val DarkColors = darkColorScheme(
 
 @Composable
 fun AppTheme(
-  useDarkTheme: Boolean = isSystemInDarkTheme(),
-  content: @Composable() () -> Unit
+  content: @Composable() () -> Unit,
+  isFollowSystem: Boolean,
+  isLightMode: Boolean
 ) {
-  val colors = if (!useDarkTheme) {
-    LightColors
-  } else {
-    DarkColors
-  }
 
-  MaterialTheme(
+    val color = if (isFollowSystem) {
+        !rememberDesktopDarkTheme()
+    } else {
+        isLightMode
+    }
+
+    val colors = if (color) {
+        LightColors
+    } else {
+        DarkColors
+    }
+
+    MaterialTheme(
     colorScheme = colors,
     content = content
-  )
+    )
+}
+
+@Composable
+fun rememberDesktopDarkTheme(): Boolean {
+    var darkTheme by remember {
+        mutableStateOf(currentSystemTheme == SystemTheme.DARK)
+    }
+
+    DisposableEffect(Unit) {
+        val darkThemeListener: (Boolean) -> Unit = {
+            darkTheme = it
+        }
+
+        val detector = OsThemeDetector.getDetector().apply {
+            registerListener(darkThemeListener)
+        }
+
+        onDispose {
+            detector.removeListener(darkThemeListener)
+        }
+    }
+
+    return darkTheme
 }
