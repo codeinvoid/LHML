@@ -1,10 +1,5 @@
-import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.window.WindowDraggableArea
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -21,7 +16,6 @@ import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import config.Config
 import config.Setting
 import kotlinx.coroutines.*
-import launcher.Launcher
 import page.ThemePage
 import java.awt.Dimension
 import java.io.File
@@ -57,41 +51,25 @@ fun main() {
             undecorated = true,
             transparent = true,
         ) {
-            Launcher().run()
             LaunchedEffect(windowState.size) {
             if (windowState.size.width < 400.dp)
                 windowState.size = DpSize(400.dp, windowState.size.height)
         }
             window.maximumSize = Dimension(windowSize.width.value.roundToInt(), windowSize.height.value.roundToInt())
             window.minimumSize = Dimension(windowSize.width.value.roundToInt(), windowSize.height.value.roundToInt())
-            ThemePage(rootComponentContext)
-            AppWindowTitleBar {
+            ThemePage(rootComponentContext) {
                 if (it) exitApplication()
             }
+            AppWindowTitleBar()
         }
     }
 }
 
 @Composable
-fun WindowScope.AppWindowTitleBar(onExitClick: (Boolean) -> Unit) = WindowDraggableArea {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isHovered by interactionSource.collectIsHoveredAsState()
-
-    Box(Modifier.fillMaxWidth().height(48.dp)) {
-        Row {
-            IconButton(onClick = { onExitClick(true) },
-                modifier = Modifier.padding(start = 20.dp, top = 18.dp).width(32.dp).height(32.dp),
-                interactionSource = interactionSource) {
-                val color = MaterialTheme.colorScheme.error
-                Crossfade(targetState = isHovered) { screen ->
-                    when (screen) {
-                        true -> Icon(
-                            Icons.Rounded.Close, "Close",
-                            tint = MaterialTheme.colorScheme.errorContainer)
-                        false -> Icon(Icons.Rounded.Close, "Close", tint = color)
-                    }
-                }
-            }
+fun WindowScope.AppWindowTitleBar() = WindowDraggableArea {
+    Box(Modifier.fillMaxWidth().height(48.dp)){
+        Row(Modifier.fillMaxSize()) {
+            Spacer(Modifier.fillMaxSize())
         }
     }
 }

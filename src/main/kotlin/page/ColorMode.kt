@@ -15,6 +15,7 @@ import component.NextButton
 import component.Progress
 import config.Config
 import config.Setting
+import reader.config
 import java.io.File
 
 class ColorMode {
@@ -31,7 +32,7 @@ class ColorMode {
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.fillMaxSize()
             ){
-                var lightMode by remember { mutableStateOf(true) }
+                var lightMode by remember { mutableStateOf(config.lightMode) }
                 val icon: @Composable () -> Unit = if (lightMode) {
                     {
                         Icon(
@@ -79,8 +80,8 @@ class ColorMode {
         isFollowSystem: (Boolean) -> Unit,
         isLightMode: (Boolean) -> Unit,
     ) {
-        var lightMode by remember { mutableStateOf(true) }
-        var followSystem by remember { mutableStateOf(false) }
+        var lightMode by remember { mutableStateOf(config.lightMode) }
+        var followSystem by remember { mutableStateOf(config.colorMode) }
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Box (modifier = Modifier.width(380.dp).fillMaxWidth().padding(start = 30.dp, end = 30.dp)){
                 Row(horizontalArrangement = Arrangement.Center,

@@ -58,3 +58,60 @@ sealed class Screen : Parcelable {
     @Parcelize
     object ThirdParty : Screen()
 }
+
+sealed class IndexPage : Parcelable {
+    @Parcelize
+    object Home: IndexPage()
+
+    @Parcelize
+    object Search: IndexPage()
+
+    @Parcelize
+    object Settings: IndexPage()
+}
+
+@Composable
+fun HomeRails() {
+    val navigation = remember { StackNavigation<IndexPage>() }
+
+    ChildStack(
+        source = navigation,
+        initialStack = { listOf(IndexPage.Home) },
+        animation = stackAnimation(slide()),
+    ) { index ->
+        when (index) {
+            is IndexPage.Home -> MainPage().index(onExitClick = {  }, onItemClick = { navigation.push(getItemInt(it))})
+//            is IndexPage.Search -> StartPage().start(
+//            onItemClick = { navigation.push(getItemInt(it)) },
+//            0f,
+//            onBack = navigation::pop
+//            )
+//
+//            is IndexPage.Settings -> StartPage().start(
+//                onItemClick = { navigation.push(it) },
+//                0f,
+//                onBack = navigation::pop
+//            )
+            else -> {
+                println()
+            }
+        }
+    }
+}
+
+fun getItemInt(item: Int) : IndexPage {
+    return when(item) {
+        0 -> {
+            IndexPage.Home
+        }
+        1 -> {
+            IndexPage.Search
+        }
+        2 -> {
+            IndexPage.Settings
+        }
+        else -> {
+           IndexPage.Home
+        }
+    }
+}

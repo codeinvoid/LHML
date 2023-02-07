@@ -31,13 +31,15 @@ dependencies {
     implementation(compose.materialIconsExtended)
     implementation(compose.animationGraphics)
     implementation("dev.3-3:jmccc:3.1.1")
+    implementation("dev.3-3:jmccc-mcdownloader:3.1.1")
+    implementation("dev.3-3:jmccc-mojang-api:3.1.1")
     implementation("dev.3-3:jmccc-microsoft-authenticator:3.1.1")
+    implementation("dev.3-3:jmccc-yggdrasil-authenticator:3.1.1")
     implementation("io.github.prismwork:prismconfig:0.2.0:all")
     implementation("com.arkivanov.decompose:decompose:1.0.0")
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains:1.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("com.github.Dansoftowner:jSystemThemeDetector:3.8")
-
 }
 
 compose.desktop {
