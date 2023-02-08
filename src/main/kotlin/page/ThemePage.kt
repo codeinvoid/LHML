@@ -1,6 +1,7 @@
 package page
 
 import AppTheme
+import HomeRails
 import ProvideComponentContext
 import androidx.compose.foundation.LocalScrollbarStyle
 import androidx.compose.foundation.defaultScrollbarStyle
@@ -14,10 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.DefaultComponentContext
-import reader.config
+import utils.reader.config
 
 @Composable
-fun ThemePage(rootComponentContext: DefaultComponentContext, onExitClick: (Boolean) -> Unit ) {
+fun ThemePage(rootComponentContext: DefaultComponentContext, onExitClick: () -> Unit ) {
     var isFollowSystem by remember { mutableStateOf(config.colorMode) }
     var isLightMode by remember { mutableStateOf(config.lightMode) }
 
@@ -29,12 +30,8 @@ fun ThemePage(rootComponentContext: DefaultComponentContext, onExitClick: (Boole
             MaterialTheme {
                 CompositionLocalProvider(LocalScrollbarStyle provides defaultScrollbarStyle()) {
                     ProvideComponentContext(rootComponentContext) {
-                        MainPage().index({onExitClick(it)}, {})
-//                        MainContent(isFollowSystem = {
-//                            isFollowSystem = it
-//                        }, isLightMode = {
-//                            isLightMode = it
-//                        })
+                        HomeRails({ onExitClick() })
+//                        MainPage().index({ onExitClick(it) },{})
                     }
                 }
             }

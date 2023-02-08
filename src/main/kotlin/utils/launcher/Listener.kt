@@ -1,4 +1,4 @@
-package launcher
+package utils.launcher
 
 import org.to2mbn.jmccc.launch.ProcessListener
 import java.util.logging.Logger

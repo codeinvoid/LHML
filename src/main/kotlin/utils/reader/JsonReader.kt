@@ -1,4 +1,4 @@
-package reader
+package utils.reader
 
 import config.Config
 import config.Setting

@@ -1,4 +1,4 @@
-package page
+package page.nonconfig
 
 import Screen
 import androidx.compose.foundation.layout.*

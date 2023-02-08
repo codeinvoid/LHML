@@ -1,4 +1,4 @@
-package page
+package page.nonconfig
 
 import Screen
 import androidx.compose.foundation.layout.*
@@ -15,7 +15,7 @@ import component.NextButton
 import component.Progress
 import config.Config
 import config.Setting
-import reader.config
+import utils.reader.config
 import java.io.File
 
 class ColorMode {

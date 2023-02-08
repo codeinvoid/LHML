@@ -15,10 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun RailItem(onExitClick: (Boolean) -> Unit, onItemClick: (Int) -> Unit) {
-    var selectedItem by remember { mutableStateOf(0) }
+fun RailItem(onExitClick: (Boolean) -> Unit, onItemClick: (Int) -> Unit, selected: Int) {
+    var selectedItem by remember { mutableStateOf(selected) }
     val items = listOf("主页", "查找", "设置")
-    val icons = listOf(Icons.Filled.RocketLaunch, Icons.Filled.Search, Icons.Filled.Settings)
+    val icons = listOf(Icons.Filled.Rocket, Icons.Filled.Search, Icons.Filled.Settings)
+
     NavigationRail(Modifier.fillMaxHeight()) {
         Column(Modifier.padding(top = 45.dp)) {
             items.forEachIndexed { index, item ->

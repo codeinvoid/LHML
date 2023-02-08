@@ -1,4 +1,4 @@
-package reader
+package utils.reader
 
 data class Patches(
     val patches: List<Version>

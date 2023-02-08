@@ -1,4 +1,4 @@
-package page
+package page.nonconfig
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*

@@ -1,12 +1,18 @@
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.*
+import androidx.compose.runtime.*
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.fade
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.slide
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import page.*
+import component.RailItem
+import page.main.MainPage
+import page.main.SearchPage
+import page.main.SettingPage
+import page.nonconfig.*
 
 @Composable
 fun MainContent(
@@ -68,32 +74,67 @@ sealed class IndexPage : Parcelable {
 
     @Parcelize
     object Settings: IndexPage()
+
+    @Parcelize
+    object Download: IndexPage()
+
+    @Parcelize
+    object Module: IndexPage()
 }
 
 @Composable
-fun HomeRails() {
+fun HomeRails(onExitClick: () -> Unit) {
     val navigation = remember { StackNavigation<IndexPage>() }
+    var item by remember { mutableStateOf(0) }
 
     ChildStack(
         source = navigation,
         initialStack = { listOf(IndexPage.Home) },
-        animation = stackAnimation(slide()),
+        animation = stackAnimation(fade()),
     ) { index ->
+        RailItem(
+            { onExitClick() },
+            {
+                item = it
+                navigation.bringToFront(getItemInt(it))
+            },
+            item,
+        )
         when (index) {
-            is IndexPage.Home -> MainPage().index(onExitClick = {  }, onItemClick = { navigation.push(getItemInt(it))})
-//            is IndexPage.Search -> StartPage().start(
-//            onItemClick = { navigation.push(getItemInt(it)) },
-//            0f,
-//            onBack = navigation::pop
-//            )
-//
-//            is IndexPage.Settings -> StartPage().start(
-//                onItemClick = { navigation.push(it) },
-//                0f,
-//                onBack = navigation::pop
-//            )
-            else -> {
-                println()
+            is IndexPage.Home -> {
+                MainPage().index()
+            }
+            is IndexPage.Search -> {
+                SearchPage().index(
+                    { onExitClick() },
+                    {
+                        navigation.bringToFront(getItemInt(it))
+                    }
+                )
+            }
+            is IndexPage.Settings -> {
+                SettingPage().index(
+                    { onExitClick() },
+                    {
+                        navigation.bringToFront(getItemInt(it))
+                    }
+                )
+            }
+            is IndexPage.Download -> {
+                SettingPage().index(
+                    { onExitClick() },
+                    {
+                        navigation.bringToFront(getItemInt(it))
+                    }
+                )
+            }
+            is IndexPage.Module -> {
+                SettingPage().index(
+                    { onExitClick() },
+                    {
+                        navigation.bringToFront(getItemInt(it))
+                    }
+                )
             }
         }
     }

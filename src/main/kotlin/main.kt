@@ -1,5 +1,6 @@
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.window.WindowDraggableArea
+import androidx.compose.material.AlertDialog
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -8,6 +9,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowScope
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import androidx.compose.ui.zIndex
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetbrains.lifecycle.LifecycleController
@@ -58,7 +60,7 @@ fun main() {
             window.maximumSize = Dimension(windowSize.width.value.roundToInt(), windowSize.height.value.roundToInt())
             window.minimumSize = Dimension(windowSize.width.value.roundToInt(), windowSize.height.value.roundToInt())
             ThemePage(rootComponentContext) {
-                if (it) exitApplication()
+                exitApplication()
             }
             AppWindowTitleBar()
         }
@@ -67,7 +69,7 @@ fun main() {
 
 @Composable
 fun WindowScope.AppWindowTitleBar() = WindowDraggableArea {
-    Box(Modifier.fillMaxWidth().height(48.dp)){
+    Box(Modifier.fillMaxWidth().height(48.dp).zIndex(0f)){
         Row(Modifier.fillMaxSize()) {
             Spacer(Modifier.fillMaxSize())
         }
